@@ -1,0 +1,9 @@
+{
+  "id": "/backends/LogicApp_Team10GetRatings_KartikRG_91ae9c1925914c549c4a4bb90338d474",
+  "title": null,
+  "description": "Team10GetRatings",
+  "url": "https://prod-26.eastus.logic.azure.com/workflows/9e669d21b1be49fd864082384b740aa5/triggers",
+  "protocol": "http",
+  "resourceId": "https://management.azure.com/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/KartikRG/providers/Microsoft.Logic/workflows/Team10GetRatings",
+  "__GitModuleVersion": 15
+}

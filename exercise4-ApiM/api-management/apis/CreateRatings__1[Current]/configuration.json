@@ -1,0 +1,92 @@
+{
+  "id": "/apis/ratings",
+  "name": "CreateRatings",
+  "apiRevision": "1",
+  "$ref-description": "api-management/apis/CreateRatings__1[Current]/api.description.html",
+  "subscriptionRequired": true,
+  "serviceUrl": "https://prod-41.eastus.logic.azure.com/workflows/be501a741f2541d98aa078eb814c1303/triggers",
+  "path": "CreateRatings",
+  "protocols": [
+    "https"
+  ],
+  "authenticationSettings": {
+    "oAuth2": null,
+    "openid": null
+  },
+  "subscriptionKeyParameterNames": {
+    "header": "Ocp-Apim-Subscription-Key",
+    "query": "subscription-key"
+  },
+  "isCurrent": true,
+  "operations": [
+    {
+      "id": "/apis/ratings/operations/manual-invoke",
+      "name": "manual-invoke",
+      "method": "POST",
+      "urlTemplate": "/manual/paths/invoke",
+      "templateParameters": [],
+      "$ref-description": "api-management/apis/CreateRatings__1[Current]/operations/POST__manual_paths_invoke1S8U9MG.description.html",
+      "request": {
+        "$ref-description": "api-management/apis/CreateRatings__1[Current]/operations/POST__manual_paths_invoke1S8U9MG.request.html",
+        "queryParameters": [],
+        "headers": [],
+        "representations": [
+          {
+            "contentType": "application/json",
+            "schemaId": "5fb572a71edd5307ccfd36e9",
+            "typeName": "request-manual"
+          }
+        ]
+      },
+      "responses": [
+        {
+          "statusCode": 200,
+          "$ref-description": "api-management/apis/CreateRatings__1[Current]/operations/POST__manual_paths_invoke1S8U9MG.response.200.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb572a71edd5307ccfd36e9",
+              "typeName": "ManualPathsInvokePost200ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        },
+        {
+          "statusCode": 400,
+          "$ref-description": "api-management/apis/CreateRatings__1[Current]/operations/POST__manual_paths_invoke1S8U9MG.response.400.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb572a71edd5307ccfd36e9",
+              "typeName": "ManualPathsInvokePost400ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        },
+        {
+          "statusCode": 500,
+          "$ref-description": "api-management/apis/CreateRatings__1[Current]/operations/POST__manual_paths_invoke1S8U9MG.response.500.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb572a71edd5307ccfd36e9",
+              "typeName": "ManualPathsInvokePost500ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        }
+      ],
+      "policies": null,
+      "$ref-policy": "api-management/policies/apis/CreateRatings__1[Current]/operations/POST__manual_paths_invoke1S8U9MG.xml"
+    }
+  ],
+  "apiSchemas": [
+    {
+      "id": "/apis/ratings/schemas/5fb572a71edd5307ccfd36e9",
+      "contentType": "application/vnd.ms-azure-apim.swagger.definitions+json",
+      "$ref-documentValue": "api-management/apis/CreateRatings__1[Current]/apiSchemas/5fb572a71edd5307ccfd36e9.document"
+    }
+  ],
+  "$ref-policy": "api-management/policies/apis/CreateRatings__1[Current].xml",
+  "__GitModuleVersion": 15
+}

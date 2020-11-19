@@ -1,0 +1,8 @@
+{
+  "name": "mobileUsers",
+  "$ref-description": null,
+  "builtIn": false,
+  "type": "custom",
+  "externalId": null,
+  "__GitModuleVersion": 15
+}

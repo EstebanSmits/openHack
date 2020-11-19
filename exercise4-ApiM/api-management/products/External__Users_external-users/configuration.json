@@ -1,0 +1,19 @@
+{
+  "id": "/products/external-users",
+  "name": "External  Users",
+  "$ref-description": "api-management/products/External__Users_external-users/product.description.html",
+  "terms": null,
+  "subscriptionRequired": true,
+  "approvalRequired": false,
+  "subscriptionsLimit": null,
+  "state": "published",
+  "$refs-groups": [
+    "api-management/groups/Administrators/configuration.json",
+    "api-management/groups/externalusers/configuration.json"
+  ],
+  "$refs-apis": [
+    "api-management/apis/GetProduct__1[Current]/configuration.json",
+    "api-management/apis/GetProducts__1[Current]/configuration.json"
+  ],
+  "__GitModuleVersion": 15
+}

@@ -1,0 +1,9 @@
+{
+  "id": "/backends/LogicApp_Ratings_KartikRG_91ae9c1925914c549c4a4bb90338d474",
+  "title": null,
+  "description": "Ratings",
+  "url": "https://prod-41.eastus.logic.azure.com/workflows/be501a741f2541d98aa078eb814c1303/triggers",
+  "protocol": "http",
+  "resourceId": "https://management.azure.com/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/KartikRG/providers/Microsoft.Logic/workflows/Ratings",
+  "__GitModuleVersion": 15
+}

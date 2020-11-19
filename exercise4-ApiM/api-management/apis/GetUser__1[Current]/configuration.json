@@ -1,0 +1,50 @@
+{
+  "id": "/apis/getuser",
+  "name": "GetUser",
+  "apiRevision": "1",
+  "$ref-description": "",
+  "subscriptionRequired": false,
+  "serviceUrl": "https://serverlessohproduct.trafficmanager.net/api",
+  "path": "GetUser",
+  "protocols": [
+    "https"
+  ],
+  "authenticationSettings": {
+    "oAuth2": null,
+    "openid": null
+  },
+  "subscriptionKeyParameterNames": {
+    "header": "Ocp-Apim-Subscription-Key",
+    "query": "subscription-key"
+  },
+  "isCurrent": true,
+  "operations": [
+    {
+      "id": "/apis/getuser/operations/getuser",
+      "name": "getuser",
+      "method": "GET",
+      "urlTemplate": "/GetUser",
+      "templateParameters": [],
+      "$ref-description": "",
+      "request": {
+        "queryParameters": [
+          {
+            "name": "userid",
+            "description": "provide a userid",
+            "type": "string",
+            "required": true,
+            "values": []
+          }
+        ],
+        "headers": [],
+        "representations": []
+      },
+      "responses": [],
+      "policies": null,
+      "$ref-policy": "api-management/policies/apis/GetUser__1[Current]/operations/GET__GetUser_getusergetuser.xml"
+    }
+  ],
+  "apiSchemas": [],
+  "$ref-policy": "api-management/policies/apis/GetUser__1[Current].xml",
+  "__GitModuleVersion": 15
+}

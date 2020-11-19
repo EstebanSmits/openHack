@@ -1,0 +1,87 @@
+{
+  "id": "/apis/GetRating",
+  "name": "GetRating",
+  "apiRevision": "1",
+  "$ref-description": "api-management/apis/GetRating__1[Current]/api.description.html",
+  "subscriptionRequired": true,
+  "serviceUrl": "https://prod-49.eastus.logic.azure.com/workflows/dee198061a42423a85b1043f36642c92/triggers",
+  "path": "GetRating",
+  "protocols": [
+    "https"
+  ],
+  "authenticationSettings": {
+    "oAuth2": null,
+    "openid": null
+  },
+  "subscriptionKeyParameterNames": {
+    "header": "Ocp-Apim-Subscription-Key",
+    "query": "subscription-key"
+  },
+  "isCurrent": true,
+  "operations": [
+    {
+      "id": "/apis/GetRating/operations/manual-invoke",
+      "name": "manual-invoke",
+      "method": "GET",
+      "urlTemplate": "/manual/paths/invoke",
+      "templateParameters": [],
+      "$ref-description": "api-management/apis/GetRating__1[Current]/operations/GET__manual_paths_invoke_GSGNJCV.description.html",
+      "request": {
+        "$ref-description": "api-management/apis/GetRating__1[Current]/operations/GET__manual_paths_invoke_GSGNJCV.request.html",
+        "queryParameters": [
+          {
+            "name": "id",
+            "description": "id of the rating .",
+            "type": "string",
+            "values": []
+          }
+        ],
+        "headers": [],
+        "representations": [
+          {
+            "contentType": "application/json",
+            "schemaId": "5fb5760b1edd5307ccfd372b",
+            "typeName": "request-manual"
+          }
+        ]
+      },
+      "responses": [
+        {
+          "statusCode": 200,
+          "$ref-description": "api-management/apis/GetRating__1[Current]/operations/GET__manual_paths_invoke_GSGNJCV.response.200.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb5760b1edd5307ccfd372b",
+              "typeName": "ManualPathsInvokeGet200ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        },
+        {
+          "statusCode": 500,
+          "$ref-description": "api-management/apis/GetRating__1[Current]/operations/GET__manual_paths_invoke_GSGNJCV.response.500.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb5760b1edd5307ccfd372b",
+              "typeName": "ManualPathsInvokeGet500ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        }
+      ],
+      "policies": null,
+      "$ref-policy": "api-management/policies/apis/GetRating__1[Current]/operations/GET__manual_paths_invoke_GSGNJCV.xml"
+    }
+  ],
+  "apiSchemas": [
+    {
+      "id": "/apis/GetRating/schemas/5fb5760b1edd5307ccfd372b",
+      "contentType": "application/vnd.ms-azure-apim.swagger.definitions+json",
+      "$ref-documentValue": "api-management/apis/GetRating__1[Current]/apiSchemas/5fb5760b1edd5307ccfd372b.document"
+    }
+  ],
+  "$ref-policy": "api-management/policies/apis/GetRating__1[Current].xml",
+  "__GitModuleVersion": 15
+}

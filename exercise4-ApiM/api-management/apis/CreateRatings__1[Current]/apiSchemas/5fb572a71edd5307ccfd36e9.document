@@ -1,0 +1,33 @@
+{
+  "definitions": {
+    "request-manual": {
+      "properties": {
+        "locationName": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "userNotes": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ManualPathsInvokePost200ApplicationJsonResponse": {
+      "type": "object"
+    },
+    "ManualPathsInvokePost400ApplicationJsonResponse": {
+      "type": "object"
+    },
+    "ManualPathsInvokePost500ApplicationJsonResponse": {
+      "type": "object"
+    }
+  }
+}

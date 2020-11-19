@@ -1,0 +1,415 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_excercise5_name": {
+            "defaultValue": "excercise5",
+            "type": "String"
+        },
+        "connections_office365_externalid": {
+            "defaultValue": "/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/KartikRG/providers/Microsoft.Web/connections/office365",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_excercise5_name')]",
+            "location": "eastus",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Create_HTML_email": {
+                            "runAfter": {
+                                "Get_contacts_(V2)": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "htmlEmail",
+                                        "type": "string",
+                                        "value": "<!DOCTYPE html>\n<html>\n<body style=\"background-color: whitesmoke; color: #454545; font-family:'Gill Sans',\n 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding-bottom: 3em;\">\n  <table style=\"width:100%; color:#454545\">\n    <tr>\n      <td style=\"width:11em;\">\n        <img style=\"margin-left:1em;\"\n        src=\"https://serverlessoh.azureedge.net/public/ice-cream-2202561_320-circle.jpg\"\n          height=\"160\" width=\"160\" alt=\"Fruit Ice Cream\">\n      </td>\n      <td>\n        <p style=\"font-style: italic; font-size: 50px;\n        font-weight:600; margin-left: 1em;\">Best For You Organics</p>\n      </td>\n    </tr>\n  </table>\n  <p style=\"text-align: center; font-style: italic; font-size:\n  80px;\">New Ice Cream Line!</p>\n  <p style=\"margin:2em 0em; font-size: 20px; text-align: center;\">\n  Best For You Organics have a new line of fruit flavored ice creams.\n  Below is the information so you can start the ordering process:\n  </p>\n  <table style=\"width:100%; border-top: 1px solid #454545;\n  border-bottom: 1px solid #454545; color:#454545; padding: 1em; font-size: 20px;\">\n    <thead>\n      <tr>\n        <th style=\"padding-bottom: 1em;\" align=\"left\">Ice Cream</th>\n        <th style=\"padding-bottom: 1em;\" align=\"left\">Description</th>\n        <th style=\"padding-bottom: 1em;\" align=\"left\">Product ID</th>\n      </tr>\n    </thead>\n    <tbody style=\"font-size: 16px;\"><!--LOOPPRODUCTS -->\n    </tbody>\n  </table>\n  <p style=\"text-align: center; margin-top: 3em;font-size: 20px;\">Please contact\n  your representative at Best For You Organics to get more information..</p>\n</body>\n</html>"
+                                    }
+                                ]
+                            }
+                        },
+                        "Get_contacts_(V2)": {
+                            "runAfter": {
+                                "Rearrange_ProductList": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/codeless/v1.0/me/contactFolders/@{encodeURIComponent(encodeURIComponent('AQMkADMxZmMwM2EyLWU0NzItNDYxNS1hMDZlLTIwYzFiMjBkMTZhOQAuAAADlHq5Vyq9v0K8_hnHX_mUkwEAECxIOibcO06NiaHiNxz7DAAAAgEOAAAA'))}/contacts"
+                            }
+                        },
+                        "Initialize_ProductList": {
+                            "runAfter": {
+                                "Parse_GetProduct_Json": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "ProductList",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_ProductListFinal": {
+                            "runAfter": {
+                                "Initialize_ProductList": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "ProductListFinal",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Parse_GetProduct_Json": {
+                            "runAfter": {
+                                "Request_GetProducts": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('Request_GetProducts')",
+                                "schema": {
+                                    "items": {
+                                        "properties": {
+                                            "productDescription": {
+                                                "type": "string"
+                                            },
+                                            "productId": {
+                                                "type": "string"
+                                            },
+                                            "productName": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "productId",
+                                            "productName",
+                                            "productDescription"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "Rearrange_ProductList": {
+                            "foreach": "@body('Parse_GetProduct_Json')",
+                            "actions": {
+                                "FormatProductasTRhtml": {
+                                    "runAfter": {
+                                        "FormatProducts": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "<TR>\n<TD>@{items('Rearrange_ProductList')['productName']}</TD>\n<TD>@{items('Rearrange_ProductList')['productDescription']}</TD>\n<TD>@{items('Rearrange_ProductList')['productId']}</TD>\n</TR>"
+                                },
+                                "FormatProducts": {
+                                    "runAfter": {},
+                                    "type": "Compose",
+                                    "inputs": {
+                                        "Description": "@{items('Rearrange_ProductList')['productDescription']}",
+                                        "Ice Cream": "@{items('Rearrange_ProductList')['productName']}",
+                                        "Product Id": "@{items('Rearrange_ProductList')['productId']}"
+                                    }
+                                },
+                                "Set_ProductListFinal_as_Formatted_TR_Html": {
+                                    "runAfter": {
+                                        "FormatProductasTRhtml": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "AppendToStringVariable",
+                                    "inputs": {
+                                        "name": "ProductListFinal",
+                                        "value": "@outputs('FormatProductasTRhtml')"
+                                    }
+                                },
+                                "Set_ProductList_as_array_of_ordered_Products": {
+                                    "runAfter": {
+                                        "Set_ProductListFinal_as_Formatted_TR_Html": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "AppendToArrayVariable",
+                                    "inputs": {
+                                        "name": "ProductList",
+                                        "value": "@outputs('FormatProducts')"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Initialize_ProductListFinal": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Replace_LoopList_with_ProductlistFinal": {
+                            "runAfter": {
+                                "Create_HTML_email": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": "@replace(variables('htmlEmail'),'<!--LOOPPRODUCTS -->',variables('ProductListFinal'))"
+                        },
+                        "Request_GetProducts": {
+                            "runAfter": {},
+                            "type": "Http",
+                            "inputs": {
+                                "method": "GET",
+                                "uri": "https://serverlessohproduct.trafficmanager.net/api/GetProducts"
+                            }
+                        },
+                        "SendEmail": {
+                            "foreach": "@body('Get_contacts_(V2)')?['value']",
+                            "actions": {
+                                "Compose_2": {
+                                    "runAfter": {},
+                                    "type": "Compose",
+                                    "inputs": "@items('SendEmail')"
+                                },
+                                "ContactInfo": {
+                                    "runAfter": {
+                                        "Compose_2": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@items('SendEmail')",
+                                        "schema": {
+                                            "properties": {
+                                                "@@odata.etag": {
+                                                    "type": "string"
+                                                },
+                                                "assistantName": {},
+                                                "birthday": {},
+                                                "businessAddress": {
+                                                    "properties": {},
+                                                    "type": "object"
+                                                },
+                                                "businessHomePage": {},
+                                                "businessPhones": {
+                                                    "type": "array"
+                                                },
+                                                "categories": {
+                                                    "type": "array"
+                                                },
+                                                "changeKey": {
+                                                    "type": "string"
+                                                },
+                                                "children": {
+                                                    "type": "array"
+                                                },
+                                                "companyName": {},
+                                                "createdDateTime": {
+                                                    "type": "string"
+                                                },
+                                                "department": {},
+                                                "displayName": {
+                                                    "type": "string"
+                                                },
+                                                "emailAddresses": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "address": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "name",
+                                                            "address"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "fileAs": {
+                                                    "type": "string"
+                                                },
+                                                "generation": {},
+                                                "givenName": {
+                                                    "type": "string"
+                                                },
+                                                "homeAddress": {
+                                                    "properties": {},
+                                                    "type": "object"
+                                                },
+                                                "homePhones": {
+                                                    "type": "array"
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "imAddresses": {
+                                                    "type": "array"
+                                                },
+                                                "initials": {},
+                                                "jobTitle": {},
+                                                "lastModifiedDateTime": {
+                                                    "type": "string"
+                                                },
+                                                "manager": {},
+                                                "middleName": {},
+                                                "mobilePhone": {},
+                                                "nickName": {},
+                                                "officeLocation": {},
+                                                "otherAddress": {
+                                                    "properties": {},
+                                                    "type": "object"
+                                                },
+                                                "parentFolderId": {
+                                                    "type": "string"
+                                                },
+                                                "personalNotes": {
+                                                    "type": "string"
+                                                },
+                                                "profession": {},
+                                                "spouseName": {},
+                                                "surname": {
+                                                    "type": "string"
+                                                },
+                                                "title": {},
+                                                "yomiCompanyName": {},
+                                                "yomiGivenName": {},
+                                                "yomiSurname": {}
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "For_each": {
+                                    "foreach": "@body('ParseEmail')",
+                                    "actions": {
+                                        "Send_an_email_(V2)_2": {
+                                            "runAfter": {},
+                                            "type": "ApiConnection",
+                                            "inputs": {
+                                                "body": {
+                                                    "Body": "<p>@{outputs('Replace_LoopList_with_ProductlistFinal')}</p>",
+                                                    "Subject": "Hang 10 (Team 10)",
+                                                    "To": "@items('For_each')['address']"
+                                                },
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "post",
+                                                "path": "/v2/Mail"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "ParseEmail": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Foreach"
+                                },
+                                "ParseEmail": {
+                                    "runAfter": {
+                                        "ContactInfo": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@body('ContactInfo')?['emailAddresses']",
+                                        "schema": {
+                                            "items": {
+                                                "properties": {
+                                                    "address": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "address"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Replace_LoopList_with_ProductlistFinal": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "office365": {
+                                "connectionId": "[parameters('connections_office365_externalid')]",
+                                "connectionName": "office365",
+                                "id": "/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/providers/Microsoft.Web/locations/eastus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

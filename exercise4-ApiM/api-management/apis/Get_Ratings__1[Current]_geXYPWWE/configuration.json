@@ -1,0 +1,87 @@
+{
+  "id": "/apis/get-ratings",
+  "name": "Get Ratings",
+  "apiRevision": "1",
+  "$ref-description": "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/api.description.html",
+  "subscriptionRequired": true,
+  "serviceUrl": "https://prod-26.eastus.logic.azure.com/workflows/9e669d21b1be49fd864082384b740aa5/triggers",
+  "path": "GetRatings",
+  "protocols": [
+    "https"
+  ],
+  "authenticationSettings": {
+    "oAuth2": null,
+    "openid": null
+  },
+  "subscriptionKeyParameterNames": {
+    "header": "Ocp-Apim-Subscription-Key",
+    "query": "subscription-key"
+  },
+  "isCurrent": true,
+  "operations": [
+    {
+      "id": "/apis/get-ratings/operations/manual-invoke",
+      "name": "manual-invoke",
+      "method": "GET",
+      "urlTemplate": "/manual/paths/invoke",
+      "templateParameters": [],
+      "$ref-description": "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/operations/GET__manual_paths_invoke_1MFPKFI.description.html",
+      "request": {
+        "$ref-description": "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/operations/GET__manual_paths_invoke_1MFPKFI.request.html",
+        "queryParameters": [
+          {
+            "name": "userid",
+            "description": "guid of userid",
+            "type": "string",
+            "values": []
+          }
+        ],
+        "headers": [],
+        "representations": [
+          {
+            "contentType": "application/json",
+            "schemaId": "5fb572bc1edd5307ccfd36f6",
+            "typeName": "request-manual"
+          }
+        ]
+      },
+      "responses": [
+        {
+          "statusCode": 200,
+          "$ref-description": "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/operations/GET__manual_paths_invoke_1MFPKFI.response.200.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb572bc1edd5307ccfd36f6",
+              "typeName": "ManualPathsInvokeGet200ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        },
+        {
+          "statusCode": 500,
+          "$ref-description": "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/operations/GET__manual_paths_invoke_1MFPKFI.response.500.description.html",
+          "representations": [
+            {
+              "contentType": "application/json",
+              "schemaId": "5fb572bc1edd5307ccfd36f6",
+              "typeName": "ManualPathsInvokeGet500ApplicationJsonResponse"
+            }
+          ],
+          "headers": []
+        }
+      ],
+      "policies": null,
+      "$ref-policy": "api-management/policies/apis/Get_Ratings__1[Current]_geXYPWWE/operations/GET__manual_paths_invoke_1MFPKFI.xml"
+    }
+  ],
+  "apiSchemas": [
+    {
+      "id": "/apis/get-ratings/schemas/5fb572bc1edd5307ccfd36f6",
+      "contentType": "application/vnd.ms-azure-apim.swagger.definitions+json",
+      "$ref-documentValue": "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/apiSchemas/5fb572bc1edd5307ccfd36f6.document"
+    }
+  ],
+  "$ref-policy": "api-management/policies/apis/Get_Ratings__1[Current]_geXYPWWE.xml",
+  "__GitModuleVersion": 15
+}

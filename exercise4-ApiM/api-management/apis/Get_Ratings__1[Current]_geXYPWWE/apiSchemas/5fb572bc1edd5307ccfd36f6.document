@@ -1,0 +1,11 @@
+{
+  "definitions": {
+    "request-manual": {},
+    "ManualPathsInvokeGet200ApplicationJsonResponse": {
+      "type": "object"
+    },
+    "ManualPathsInvokeGet500ApplicationJsonResponse": {
+      "type": "object"
+    }
+  }
+}

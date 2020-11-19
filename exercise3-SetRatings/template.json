@@ -1,0 +1,279 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_Ratings_name": {
+            "defaultValue": "Ratings",
+            "type": "String"
+        },
+        "connections_documentdb_externalid": {
+            "defaultValue": "/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/KartikRG/providers/Microsoft.Web/connections/documentdb",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_Ratings_name')]",
+            "location": "eastus",
+            "identity": {
+                "principalId": "1c4998eb-5099-44ca-93eb-0ec03b06e08f",
+                "tenantId": "e12892b6-7862-42d2-9e6f-c36d23a32018",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "locationName": {
+                                            "type": "string"
+                                        },
+                                        "productId": {
+                                            "type": "string"
+                                        },
+                                        "rating": {
+                                            "type": "integer"
+                                        },
+                                        "userId": {
+                                            "type": "string"
+                                        },
+                                        "userNotes": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Create_or_update_document": {
+                            "runAfter": {
+                                "Create_ratingId": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "id": "@variables('ratingId')",
+                                    "locationName": "@triggerBody()?['locationName']",
+                                    "productId": "@triggerBody()?['productId']",
+                                    "rating": "@triggerBody()?['rating']",
+                                    "timestamp": "@utcNow()",
+                                    "userId": "@triggerBody()?['userId']",
+                                    "userNotes": "@triggerBody()?['userNotes']"
+                                },
+                                "headers": {
+                                    "x-ms-documentdb-partitionkey": "@triggerBody()?['productId']"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['documentdb']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/dbs/@{encodeURIComponent('BFYOC')}/colls/@{encodeURIComponent('ratings')}/docs"
+                            }
+                        },
+                        "Create_ratingId": {
+                            "runAfter": {
+                                "ValidateRating": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "ratingId",
+                                        "type": "string",
+                                        "value": "@{guid()}"
+                                    }
+                                ]
+                            }
+                        },
+                        "GetProduct": {
+                            "runAfter": {
+                                "ValidateUser": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Http",
+                            "inputs": {
+                                "method": "GET",
+                                "queries": {
+                                    "productid": "@triggerBody()?['productId']"
+                                },
+                                "uri": "https://serverlessohproduct.trafficmanager.net/api/GetProduct/"
+                            }
+                        },
+                        "GetUser": {
+                            "runAfter": {},
+                            "type": "Http",
+                            "inputs": {
+                                "method": "GET",
+                                "queries": {
+                                    "userId": "@triggerBody()?['userId']"
+                                },
+                                "uri": "https://serverlessohuser.trafficmanager.net/api/GetUser"
+                            }
+                        },
+                        "Response": {
+                            "runAfter": {
+                                "Create_or_update_document": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Response",
+                            "kind": "Http",
+                            "inputs": {
+                                "body": {
+                                    "id": "@variables('ratingId')",
+                                    "locationName": "@triggerBody()?['locationName']",
+                                    "productId": "@triggerBody()?['productId']",
+                                    "rating": "@triggerBody()?['rating']",
+                                    "timestamp": "@utcNow()",
+                                    "userId": "@triggerBody()?['userId']",
+                                    "userNotes": "@triggerBody()?['userNotes']"
+                                },
+                                "statusCode": 200
+                            }
+                        },
+                        "ValidateProductId": {
+                            "actions": {
+                                "Productid_not_found": {
+                                    "runAfter": {},
+                                    "type": "Response",
+                                    "kind": "Http",
+                                    "inputs": {
+                                        "body": "@body('GetProduct')",
+                                        "statusCode": "@outputs('GetProduct')['statusCode']"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "GetProduct": [
+                                    "Succeeded",
+                                    "Failed"
+                                ]
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "not": {
+                                            "equals": [
+                                                "@outputs('GetProduct')['statusCode']",
+                                                200
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        },
+                        "ValidateRating": {
+                            "actions": {},
+                            "runAfter": {
+                                "ValidateProductId": [
+                                    "Succeeded",
+                                    "Failed"
+                                ]
+                            },
+                            "else": {
+                                "actions": {
+                                    "Response_2": {
+                                        "runAfter": {},
+                                        "type": "Response",
+                                        "kind": "Http",
+                                        "inputs": {
+                                            "body": "Please provide a valid product rating (0,5).",
+                                            "statusCode": 400
+                                        }
+                                    }
+                                }
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "greaterOrEquals": [
+                                            "@triggerBody()?['rating']",
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "lessOrEquals": [
+                                            "@triggerBody()?['rating']",
+                                            5
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        },
+                        "ValidateUser": {
+                            "actions": {
+                                "Userid_not_found": {
+                                    "runAfter": {},
+                                    "type": "Response",
+                                    "kind": "Http",
+                                    "inputs": {
+                                        "body": "@body('GetUser')",
+                                        "statusCode": "@outputs('GetUser')['statusCode']"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "GetUser": [
+                                    "Failed",
+                                    "Succeeded"
+                                ]
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "not": {
+                                            "equals": [
+                                                "@outputs('GetUser')['statusCode']",
+                                                200
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "documentdb": {
+                                "connectionId": "[parameters('connections_documentdb_externalid')]",
+                                "connectionName": "documentdb",
+                                "id": "/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/providers/Microsoft.Web/locations/eastus/managedApis/documentdb"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "/products/mobile-users",
+  "name": "Mobile Users",
+  "$ref-description": "api-management/products/Mobile_Users_mobile-users/product.description.html",
+  "terms": null,
+  "subscriptionRequired": true,
+  "approvalRequired": false,
+  "subscriptionsLimit": null,
+  "state": "published",
+  "$refs-groups": [
+    "api-management/groups/Administrators/configuration.json",
+    "api-management/groups/mobileUsers/configuration.json"
+  ],
+  "$refs-apis": [
+    "api-management/apis/CreateRatings__1[Current]/configuration.json",
+    "api-management/apis/Get_Ratings__1[Current]_geXYPWWE/configuration.json",
+    "api-management/apis/GetProduct__1[Current]/configuration.json",
+    "api-management/apis/GetProducts__1[Current]/configuration.json",
+    "api-management/apis/GetRating__1[Current]/configuration.json",
+    "api-management/apis/GetUser__1[Current]/configuration.json"
+  ],
+  "__GitModuleVersion": 15
+}

@@ -1,0 +1,48 @@
+{
+  "id": "/apis/getproduct",
+  "name": "GetProduct",
+  "apiRevision": "1",
+  "$ref-description": "",
+  "subscriptionRequired": true,
+  "serviceUrl": "https://serverlessohproduct.trafficmanager.net/api",
+  "path": "GetProduct",
+  "protocols": [
+    "https"
+  ],
+  "authenticationSettings": {
+    "oAuth2": null,
+    "openid": null
+  },
+  "subscriptionKeyParameterNames": {
+    "header": "Ocp-Apim-Subscription-Key",
+    "query": "subscription-key"
+  },
+  "isCurrent": true,
+  "operations": [
+    {
+      "id": "/apis/getproduct/operations/getproduct",
+      "name": "GetProduct",
+      "method": "GET",
+      "urlTemplate": "/GetProduct",
+      "templateParameters": [],
+      "$ref-description": "",
+      "request": {
+        "queryParameters": [
+          {
+            "name": "productId",
+            "description": "Product Id",
+            "type": "string",
+            "values": []
+          }
+        ],
+        "headers": [],
+        "representations": []
+      },
+      "responses": [],
+      "policies": null
+    }
+  ],
+  "apiSchemas": [],
+  "$ref-policy": "api-management/policies/apis/GetProduct__1[Current].xml",
+  "__GitModuleVersion": 15
+}

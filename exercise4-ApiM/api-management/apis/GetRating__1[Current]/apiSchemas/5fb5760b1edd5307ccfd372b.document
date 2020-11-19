@@ -1,0 +1,18 @@
+{
+  "definitions": {
+    "request-manual": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ManualPathsInvokeGet200ApplicationJsonResponse": {
+      "type": "object"
+    },
+    "ManualPathsInvokeGet500ApplicationJsonResponse": {
+      "type": "object"
+    }
+  }
+}
